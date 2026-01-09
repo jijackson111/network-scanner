@@ -11,7 +11,7 @@ def scan(ip_range):
     arp_request_broadcast = broadcast / arp_request
     
     # Send the packet and wait for responses
-    answered_list = scapy.srp(arp_request_broadcast, timeout=1, verbose=False)[0]
+    answered_list = scapy.srp(arp_request_broadcast, timeout=3, verbose=1, retry=2)[0]
 
     # Parse the results
     clients = []

@@ -2,6 +2,7 @@ import argparse
 import os 
 import sys
 import discovery
+import scanner
 
 # Check if run with sudo
 if os.geteuid() != 0:
@@ -17,6 +18,13 @@ target_range = args.t
 port_range = args.p
 output_file = args.o
 
-# Get list of clients that are up
+# Get list of client IP addresses that are up
 active_clients = discovery.scan(target_range)
-print(active_clients)
+ip_list = [client['ip'] for client in active_clients]
+if not ip_list:
+    sys.exit("No active hosts found") 
+print(f"{len(ip_list)} hosts found")
+print(ip_list)
+# Send list for scanning
+found_ports = scanner.run_port_scan(ip_list, port_range)
+print(found_ports)
